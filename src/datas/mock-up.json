@@ -1,0 +1,32 @@
+[
+    {
+        "id" : 1,
+        "date" : "2026-03-30",
+        "person" : ["han", "lee"],
+        "store" : "연가정",
+        "menu" : "새우들깨칼국수",
+        "category" : "한식",
+        "price" : "11000",
+        "grade" : 4
+    },
+    {
+        "id" : 2,
+        "date" : "2026-03-30",
+        "person" : ["kim"],
+        "store" : "보승회관",
+        "menu" : "뼈해장국",
+        "category" : "한식",
+        "price" : "11000",
+        "grade" : 3
+    },
+    {
+        "id" : 3,
+        "date" : "2026-04-01",
+        "person" : ["han", "lee", "kim"],
+        "store" : "맘스터치",
+        "menu" : "런치세트",
+        "category" : "햄버거",
+        "price" : "9900",
+        "grade" : 3
+    }
+]
