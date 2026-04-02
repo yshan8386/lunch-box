@@ -8,6 +8,7 @@ import Header from './components/Header.tsx'
 import List from './pages/List.tsx'
 import Detail from './pages/Detail.tsx'
 import Write from './pages/Write.tsx'
+import Home from './pages/Home.tsx'
 
 import data from "./datas/mock-up.json"
 
@@ -71,7 +72,8 @@ function App() {
         <div className="relative z-10">
           <Header/>
           <Routes>
-            <Route path="/" element={<List/>} />
+            <Route path="/" element={<Home/>} />
+            <Route path="/list" element={<List/>} />
             <Route path="/detail/:id" element={<Detail/>} />
             <Route path="/write" element={<Write/>} />
           </Routes>
