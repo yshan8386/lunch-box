@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-function Write({addLunch}, {persons}){
-    const [form, setForm] = useState({ store: '', menu:'', date:'', price:0, grade:0})
+function Write({addLunch, persons, category}){
+    const [form, setForm] = useState({ store: '', menu:'', date:'', price:0, grade:0, persons:[], category:''})
 
     const navigate = useNavigate()
     const handleSave = ()=>{
@@ -31,6 +31,18 @@ function Write({addLunch}, {persons}){
                 </div>
 
                 <div>
+                    <label className="block text-sm text-gray-500 mb-1">종류</label>
+                    <select name="category"
+                        value={form.category}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm"
+                    >
+                        <option value="">선택</option>
+                        {category.map((item)=>(<option value={item.code}>{item.category}</option>))}
+                    </select>
+                </div>
+
+                <div>
                     <label className="block text-sm text-gray-500 mb-1">메뉴명</label>
                     <input name="menu" value={form.menu} onChange={handleChange} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
                 </div>
@@ -51,16 +63,17 @@ function Write({addLunch}, {persons}){
 
                 <div>
                     <label className="block text-sm text-gray-500 mb-1">멤버</label>
-                    {persons.map(name=>{
-                          <label key={name}>
-                            <input
-                                type="checkbox"
-                                checked={form.person.includes(name)}
-                                onChange={() => handlePersonToggle(name)}
-                            />
-                            {name}
-                        </label>
-                    })}
+                    <select name="persons"
+                        multiple
+                        value={form.persons}
+                        onChange={(e) => {
+                            const selected = Array.from(e.target.selectedOptions, o => o.value)
+                            setForm(prev => ({...prev, person: selected}))
+                        }}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm"
+                    >
+                        {persons.map((person)=><option value={person.id}>{person.name}</option>)}
+                    </select>
                 </div>
 
                 <div>
@@ -75,7 +88,7 @@ function Write({addLunch}, {persons}){
                 {/* 버튼 */}
                 <div className="flex justify-end gap-2 mt-8">
                     <button
-                        onClick={() => navigate('/')}
+                        onClick={() => navigate('/list')}
                         className="px-6 py-2 border border-gray-300 text-gray-500 text-sm font-semibold rounded-full hover:bg-gray-100 transition-colors"
                     >
                         취소

@@ -12,6 +12,7 @@ import Home from './pages/Home.tsx'
 
 import data from "./datas/mock-up.json"
 import personData from "./datas/person-data.json"
+import categoryData from "./datas/category.json"
 
 const BG_ICONS = [
   { Icon: CakeIcon,        top: '3%',  left: '5%',  size: 40, rotate: -15 },
@@ -61,6 +62,11 @@ function App() {
     return saved? JSON.parse(saved) : personData
   })
 
+  const [category, setCategory] = useState(()=>{
+    const saved = localStorage.getItem('category')
+    return saved? JSON.parse(saved) : categoryData 
+  })
+
   const addLunch = (item)=> setLunches(prev=> [...prev, item])
   const updateLunch = (id, updated)=> setLunches(prev=> prev.map(item=>item.id ===id? {...item, ...updated} : item))
   const deleteLunch = (id) => setLunches(prev=> prev.filter(item => item.id !== id))
@@ -81,7 +87,7 @@ function App() {
             <Route path="/" element={<Home/>} />
             <Route path="/list" element={<List/>} />
             <Route path="/detail/:id" element={<Detail/>} />
-            <Route path="/write" element={<Write addLunch={addLunch} persons={persons}/>}/>
+            <Route path="/write" element={<Write addLunch={addLunch} persons={persons} category={category}/>}/>
           </Routes>
         </div>
       </div>

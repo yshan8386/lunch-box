@@ -2,31 +2,67 @@
     {
         "id" : 1,
         "date" : "2026-03-30",
-        "person" : ["han", "lee"],
+        "category" : 1,
         "store" : "연가정",
-        "menu" : "새우들깨칼국수",
-        "category" : "한식",
-        "price" : "11000",
-        "grade" : 4
+        "menus" : [
+            { "id" : 1
+                , "menu" : "새우들깨칼국수"
+                , "person" : 1
+                , "price" : 11000
+                , "grade" : 3
+            },
+            { "id" : 2
+                , "menu" : "새우들깨칼국수"
+                , "person" : 2
+                , "price" : 11000
+                , "grade" : 3
+            }
+        ]
     },
     {
         "id" : 2,
         "date" : "2026-03-30",
-        "person" : ["kim"],
         "store" : "보승회관",
-        "menu" : "뼈해장국",
-        "category" : "한식",
-        "price" : "11000",
-        "grade" : 3
+        "menus" : [
+            { "id" : 3
+                , "menu" : "뼈해장국"
+                , "person" : 3
+                , "price" : 11000
+                , "grade" : 3
+            }
+        ],
+        "category" : 1
     },
     {
         "id" : 3,
         "date" : "2026-04-01",
-        "person" : ["han", "lee", "kim"],
         "store" : "맘스터치",
-        "menu" : "런치세트",
-        "category" : "햄버거",
-        "price" : "9900",
-        "grade" : 3
+        "menus" : [
+            { "id" : 4
+                , "menu" : "싸이버거 런치세트"
+                , "person" : 1
+                , "price" : 9900
+                , "grade" : 4
+            },
+            { "id" : 5
+                , "menu" : "싸이버거 런치세트"
+                , "person" : 2
+                , "price" : 9900
+                , "grade" : 3
+            },
+            { "id" : 6
+                , "menu" : "싸이버거 런치세트"
+                , "person" : 3
+                , "price" : 9900
+                , "grade" : 4
+            },
+            { "id" : 7
+                , "menu" : "싸이버거 런치세트"
+                , "person" : 4
+                , "price" : 9900
+                , "grade" : 3
+            }
+        ],
+        "category" : 5
     }
 ]
