@@ -5,9 +5,9 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import { CakeIcon, ArchiveBoxIcon, ShoppingBagIcon, SparklesIcon } from '@heroicons/react/24/outline'
 
 import Header from './components/Header.tsx'
-import List from './pages/List.tsx'
-import Detail from './pages/Detail.tsx'
-import Write from './pages/Write.tsx'
+import List from './pages/lunch/List.tsx'
+import Detail from './pages/lunch/Detail.tsx'
+import Write from './pages/lunch/Write.tsx'
 import Home from './pages/Home.tsx'
 
 import data from "./datas/mock-up.json"
@@ -85,9 +85,9 @@ function App() {
           <Header/>
           <Routes>
             <Route path="/" element={<Home/>} />
-            <Route path="/list" element={<List/>} />
-            <Route path="/detail/:id" element={<Detail/>} />
-            <Route path="/write" element={<Write addLunch={addLunch} persons={persons} category={category}/>}/>
+            <Route path="/lunch/list" element={<List/>} />
+            <Route path="/lunch/detail/:id" element={<Detail/>} />
+            <Route path="/lunch/write" element={<Write addLunch={addLunch} persons={persons} category={category}/>}/>
           </Routes>
         </div>
       </div>

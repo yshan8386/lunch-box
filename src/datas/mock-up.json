@@ -3,17 +3,20 @@
         "id" : 1,
         "date" : "2026-03-30",
         "category" : 1,
+        "category_nm" : "한식",
         "store" : "연가정",
         "menus" : [
             { "id" : 1
                 , "menu" : "새우들깨칼국수"
                 , "person" : 1
+                , "person_nm" : "한연수"
                 , "price" : 11000
                 , "grade" : 3
             },
             { "id" : 2
                 , "menu" : "새우들깨칼국수"
                 , "person" : 2
+                , "person_nm" : "이다솜"
                 , "price" : 11000
                 , "grade" : 3
             }
@@ -22,47 +25,54 @@
     {
         "id" : 2,
         "date" : "2026-03-30",
+        "category" : 1,
+        "category_nm" : "한식",
         "store" : "보승회관",
         "menus" : [
             { "id" : 3
                 , "menu" : "뼈해장국"
                 , "person" : 3
+                , "person_nm" : "김가영"
                 , "price" : 11000
                 , "grade" : 3
             }
-        ],
-        "category" : 1
+        ]
     },
     {
         "id" : 3,
         "date" : "2026-04-01",
         "store" : "맘스터치",
+        "category" : 5,
+        "category_nm" : "햄버거",
         "menus" : [
             { "id" : 4
                 , "menu" : "싸이버거 런치세트"
                 , "person" : 1
+                , "person_nm" : "한연수"
                 , "price" : 9900
                 , "grade" : 4
             },
             { "id" : 5
                 , "menu" : "싸이버거 런치세트"
                 , "person" : 2
+                , "person_nm" : "이다솜"
                 , "price" : 9900
                 , "grade" : 3
             },
             { "id" : 6
                 , "menu" : "싸이버거 런치세트"
                 , "person" : 3
+                , "person_nm" : "김가영"
                 , "price" : 9900
                 , "grade" : 4
             },
             { "id" : 7
                 , "menu" : "싸이버거 런치세트"
                 , "person" : 4
+                , "person_nm" : "김한솔"
                 , "price" : 9900
                 , "grade" : 3
             }
-        ],
-        "category" : 5
+        ]
     }
 ]
