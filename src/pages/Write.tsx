@@ -1,13 +1,20 @@
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-function handleSave(){
-    console.log("저장");
-    
+function Write({addLunch}, {persons}){
+    const [form, setForm] = useState({ store: '', menu:'', date:'', price:0, grade:0})
 
-}
-
-function Write(){
     const navigate = useNavigate()
+    const handleSave = ()=>{
+        console.log("저장");
+        addLunch({id : Date.now(),
+                ...form
+        })
+    }
+    const handleChange = (e)=>{
+        console.log("change")
+        setForm(prev=> ({...prev, [e.target.name] : e.target.value }))
+    }
 
     return (
         <div className="flex justify-center p-8">
@@ -20,32 +27,46 @@ function Write(){
 
                 <div>
                     <label className="block text-sm text-gray-500 mb-1">상호</label>
-                    <input className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
+                    <input name="store" value={form.store} onChange={handleChange} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
                 </div>
 
                 <div>
                     <label className="block text-sm text-gray-500 mb-1">메뉴명</label>
-                    <input className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
+                    <input name="menu" value={form.menu} onChange={handleChange} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
                 </div>
 
                 <div>
                     <label className="block text-sm text-gray-500 mb-1">방문일</label>
-                    <input type="date" className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
+                    <input name="date" value={form.date} onChange={handleChange} type="date" className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
                 </div>
 
                 <div>
                     <label className="block text-sm text-gray-500 mb-1">가격</label>
                     <div className="flex items-center gap-2">
                         <span className="text-sm text-gray-500">₩</span>
-                        <input type="number" className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
+                        <input name="price" value={form.price} onChange={handleChange} type="number" className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
                         <span className="text-sm text-gray-500">원</span>
                     </div>
                 </div>
 
                 <div>
+                    <label className="block text-sm text-gray-500 mb-1">멤버</label>
+                    {persons.map(name=>{
+                          <label key={name}>
+                            <input
+                                type="checkbox"
+                                checked={form.person.includes(name)}
+                                onChange={() => handlePersonToggle(name)}
+                            />
+                            {name}
+                        </label>
+                    })}
+                </div>
+
+                <div>
                     <label className="block text-sm text-gray-500 mb-1">별점</label>
                     <div className="flex justify-end">
-                        <input type="number" min="1" max="5" className="w-20 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
+                        <input name="grade" value={form.grade} onChange={handleChange} type="number" min="1" max="5" className="w-20 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
                     </div>
                 </div>
 
