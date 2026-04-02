@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+html, body {
+  font-family: 'Nunito', sans-serif;
+  background-color: #d3ebff;
+  min-height: 100vh;
+}

@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom"
 
 function handleSave(){
     console.log("저장");
+    
+
 }
 
 function Write(){
