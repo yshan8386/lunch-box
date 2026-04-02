@@ -1,14 +1,25 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-function Write({addLunch, persons, category}){
-    const [form, setForm] = useState({ store: '', menu:'', date:'', price:0, grade:0, persons:[], category:''})
+import { Lunch } from '../../types/lunch'
+import { Person } from '../../types/person'
+import { Category } from '../../types/category'
+
+interface WriteProps {
+    addLunch: (item: Lunch)=>void
+    persons: Person[]   
+    category: Category[]
+}
+
+function Write({addLunch, persons, category} : WriteProps){
+    const [form, setForm] = useState({ store: '', date:'', category:'', category_nm:'', menus:[]})
+    const [menu, setMenu] = useState({menu: '', person:0, person_nm:'', price:0, grade:0})
 
     const navigate = useNavigate()
     const handleSave = ()=>{
         console.log("저장");
         addLunch({id : Date.now(),
-                ...form
+                    ...form
         })
     }
     const handleChange = (e)=>{
