@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
-import data from '../datas/mock-up.json'
+import data from '../../datas/mock-up.json'
 
 function Detail(){
     const {id} = useParams()

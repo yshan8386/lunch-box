@@ -1,14 +1,25 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-function Write({addLunch}, {persons}){
-    const [form, setForm] = useState({ store: '', menu:'', date:'', price:0, grade:0})
+import { Lunch } from '../../types/lunch'
+import { Person } from '../../types/person'
+import { Category } from '../../types/category'
+
+interface WriteProps {
+    addLunch: (item: Lunch)=>void
+    persons: Person[]   
+    category: Category[]
+}
+
+function Write({addLunch, persons, category} : WriteProps){
+    const [form, setForm] = useState({ store: '', date:'', category:'', category_nm:'', menus:[]})
+    const [menu, setMenu] = useState({menu: '', person:0, person_nm:'', price:0, grade:0})
 
     const navigate = useNavigate()
     const handleSave = ()=>{
         console.log("저장");
         addLunch({id : Date.now(),
-                ...form
+                    ...form
         })
     }
     const handleChange = (e)=>{
@@ -28,6 +39,18 @@ function Write({addLunch}, {persons}){
                 <div>
                     <label className="block text-sm text-gray-500 mb-1">상호</label>
                     <input name="store" value={form.store} onChange={handleChange} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
+                </div>
+
+                <div>
+                    <label className="block text-sm text-gray-500 mb-1">종류</label>
+                    <select name="category"
+                        value={form.category}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm"
+                    >
+                        <option value="">선택</option>
+                        {category.map((item)=>(<option value={item.code}>{item.category}</option>))}
+                    </select>
                 </div>
 
                 <div>
@@ -51,16 +74,17 @@ function Write({addLunch}, {persons}){
 
                 <div>
                     <label className="block text-sm text-gray-500 mb-1">멤버</label>
-                    {persons.map(name=>{
-                          <label key={name}>
-                            <input
-                                type="checkbox"
-                                checked={form.person.includes(name)}
-                                onChange={() => handlePersonToggle(name)}
-                            />
-                            {name}
-                        </label>
-                    })}
+                    <select name="persons"
+                        multiple
+                        value={form.persons}
+                        onChange={(e) => {
+                            const selected = Array.from(e.target.selectedOptions, o => o.value)
+                            setForm(prev => ({...prev, person: selected}))
+                        }}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm"
+                    >
+                        {persons.map((person)=><option value={person.id}>{person.name}</option>)}
+                    </select>
                 </div>
 
                 <div>
@@ -75,7 +99,7 @@ function Write({addLunch}, {persons}){
                 {/* 버튼 */}
                 <div className="flex justify-end gap-2 mt-8">
                     <button
-                        onClick={() => navigate('/')}
+                        onClick={() => navigate('/list')}
                         className="px-6 py-2 border border-gray-300 text-gray-500 text-sm font-semibold rounded-full hover:bg-gray-100 transition-colors"
                     >
                         취소

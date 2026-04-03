@@ -1,0 +1,38 @@
+[  
+    {
+        "id" : 1
+        , "category": "한식"
+        , "code" : "korean"
+    },
+    {
+        "id" : 2
+        , "category": "양식"
+        , "code" : "western"
+    },
+    {
+        "id" : 3
+        , "category": "중식"
+        , "code" : "chinese"
+    },
+    {
+        "id" : 4
+        , "category": "분식"
+        , "code" : "snack"
+    },
+    {
+        "id" : 5
+        , "category": "햄버거"
+        , "code" : "snack"
+    },
+    {
+        "id" : 6
+        , "category": "후식"
+        , "code" : "dessert"
+    },
+     {
+        "id" : 7
+        , "category": "커피"
+        , "code" : "coffee"
+    }
+
+]
