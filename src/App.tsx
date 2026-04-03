@@ -1,7 +1,7 @@
 import './App.css'
 
 import { useState, useEffect } from 'react'
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { CakeIcon, ArchiveBoxIcon, ShoppingBagIcon, SparklesIcon } from '@heroicons/react/24/outline'
 
 import Header from './components/Header.tsx'

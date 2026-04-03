@@ -1,30 +1,42 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-import { Lunch } from '../../types/lunch'
-import { Person } from '../../types/person'
-import { Category } from '../../types/category'
+import type { Lunch, Menu } from '../../types/lunch'
+import type { Person } from '../../types/person'
+import type { Category } from '../../types/category'
 
 interface WriteProps {
-    addLunch: (item: Lunch)=>void
-    persons: Person[]   
+    addLunch: (item: Lunch) => void
+    persons: Person[]
     category: Category[]
 }
 
-function Write({addLunch, persons, category} : WriteProps){
-    const [form, setForm] = useState({ store: '', date:'', category:'', category_nm:'', menus:[]})
-    const [menu, setMenu] = useState({menu: '', person:0, person_nm:'', price:0, grade:0})
+const emptyMenu = (): Menu => ({ id: Date.now(), menu: '', person: 0, person_nm: '', price: 0, grade: 0 })
+
+function Write({ addLunch, persons, category }: WriteProps) {
+    const [form, setForm] = useState({ store: '', date: '', category: 0, category_nm: '' })
+    const [menus, setMenus] = useState<Menu[]>([emptyMenu()])
 
     const navigate = useNavigate()
-    const handleSave = ()=>{
-        console.log("저장");
-        addLunch({id : Date.now(),
-                    ...form
-        })
+
+    const handleSave = () => {
+        addLunch({ id: Date.now(), ...form, menus })
     }
-    const handleChange = (e)=>{
-        console.log("change")
-        setForm(prev=> ({...prev, [e.target.name] : e.target.value }))
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
+    }
+
+    const addMenu = () => {
+        setMenus(prev => [...prev, emptyMenu()])
+    }
+
+    const deleteMenu = (index: number) => {
+        setMenus(prev => prev.filter((_, i) => i !== index))
+    }
+
+    const handleMenuChange = (index: number, e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        setMenus(prev => prev.map((m, i) => i === index ? { ...m, [e.target.name]: e.target.value } : m))
     }
 
     return (
@@ -42,20 +54,13 @@ function Write({addLunch, persons, category} : WriteProps){
                 </div>
 
                 <div>
-                    <label className="block text-sm text-gray-500 mb-1">종류</label>
-                    <select name="category"
-                        value={form.category}
-                        onChange={handleChange}
+                    <label className="block text-sm text-gray-500 mb-1">카테고리</label>
+                    <select name="category" value={form.category} onChange={handleChange}
                         className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm"
                     >
                         <option value="">선택</option>
-                        {category.map((item)=>(<option value={item.code}>{item.category}</option>))}
+                        {category.map((item) => (<option key={item.code} value={item.code}>{item.category}</option>))}
                     </select>
-                </div>
-
-                <div>
-                    <label className="block text-sm text-gray-500 mb-1">메뉴명</label>
-                    <input name="menu" value={form.menu} onChange={handleChange} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
                 </div>
 
                 <div>
@@ -63,44 +68,71 @@ function Write({addLunch, persons, category} : WriteProps){
                     <input name="date" value={form.date} onChange={handleChange} type="date" className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
                 </div>
 
-                <div>
-                    <label className="block text-sm text-gray-500 mb-1">가격</label>
-                    <div className="flex items-center gap-2">
-                        <span className="text-sm text-gray-500">₩</span>
-                        <input name="price" value={form.price} onChange={handleChange} type="number" className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
-                        <span className="text-sm text-gray-500">원</span>
-                    </div>
-                </div>
-
-                <div>
-                    <label className="block text-sm text-gray-500 mb-1">멤버</label>
-                    <select name="persons"
-                        multiple
-                        value={form.persons}
-                        onChange={(e) => {
-                            const selected = Array.from(e.target.selectedOptions, o => o.value)
-                            setForm(prev => ({...prev, person: selected}))
-                        }}
-                        className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm"
+                {/* 추가 버튼 */}
+                <div className="flex justify-end">
+                    <button
+                        type="button"
+                        onClick={addMenu}
+                        className="px-4 py-1.5 bg-sky-50 border border-sky-300 text-sky-600 text-sm font-semibold rounded-full hover:bg-sky-100 transition-colors"
                     >
-                        {persons.map((person)=><option value={person.id}>{person.name}</option>)}
-                    </select>
+                        + 추가
+                    </button>
                 </div>
 
-                <div>
-                    <label className="block text-sm text-gray-500 mb-1">별점</label>
-                    <div className="flex justify-end">
-                        <input name="grade" value={form.grade} onChange={handleChange} type="number" min="1" max="5" className="w-20 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
+                {/* 메뉴 목록 */}
+                {menus.map((menu, index) => (
+                    <div key={menu.id}>
+                        <div className="flex items-center gap-2 mb-4">
+                            <hr className="flex-1 border-dashed border-gray-300" />
+                            <button type="button" onClick={() => deleteMenu(index)}
+                                className="px-4 py-1.5 bg-red-50 border border-red-300 text-red-500 text-sm font-semibold rounded-full hover:bg-red-100 transition-colors"
+                            >
+                                삭제
+                            </button>
+                        </div>
+
+                        <div className="space-y-3">
+                            <div>
+                                <label className="block text-sm text-gray-500 mb-1">메뉴명</label>
+                                <input name="menu" value={menu.menu} onChange={(e) => handleMenuChange(index, e)} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm text-gray-500 mb-1">가격</label>
+                                <div className="flex items-center gap-2">
+                                    <span className="text-sm text-gray-500">₩</span>
+                                    <input name="price" value={menu.price} onChange={(e) => handleMenuChange(index, e)} type="number" className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
+                                    <span className="text-sm text-gray-500">원</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm text-gray-500 mb-1">멤버</label>
+                                <select name="person" value={menu.person} onChange={(e) => handleMenuChange(index, e)}
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm"
+                                >
+                                    <option value="">선택</option>
+                                    {persons.map((person) => <option key={person.id} value={person.id}>{person.name}</option>)}
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm text-gray-500 mb-1">별점</label>
+                                <div className="flex justify-end">
+                                    <input name="grade" value={menu.grade} onChange={(e) => handleMenuChange(index, e)} type="number" min="1" max="5" className="w-20 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                ))}
 
                 </div>
 
                 {/* 버튼 */}
                 <div className="flex justify-end gap-2 mt-8">
                     <button
-                        onClick={() => navigate('/list')}
-                        className="px-6 py-2 border border-gray-300 text-gray-500 text-sm font-semibold rounded-full hover:bg-gray-100 transition-colors"
+                        onClick={() => navigate('/lunch/list')}
+                        className="px-6 py-2 bg-white border border-gray-300 text-gray-500 text-sm font-semibold rounded-full hover:bg-gray-100 transition-colors"
                     >
                         취소
                     </button>

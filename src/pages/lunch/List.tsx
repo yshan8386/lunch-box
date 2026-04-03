@@ -18,7 +18,7 @@ function List(){
                 </thead>
                 <tbody>
                 {data.map((item, index) => (
-                    <tr key={item.id} className="hover:bg-sky-50/60 cursor-pointer border-t border-sky-100/60" onClick={() => navigate(`/detail/${item.id}`)}>
+                    <tr key={item.id} className="hover:bg-sky-50/60 cursor-pointer border-t border-sky-100/60" onClick={() => navigate(`/lunch/detail/${item.id}`)}>
                         <td className="px-4 py-3">{index+1}</td>
                         <td className="px-4 py-3">{item.category_nm}</td>
                         <td className="px-4 py-3">{item.store}</td>
