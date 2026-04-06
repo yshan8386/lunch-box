@@ -1,130 +1,95 @@
-import {Link} from 'react-router-dom';
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import '../Random.css';
 
-// 메뉴 입력 컴포넌트
-const MenuForm = ({onAddMenu} : {onAddMenu : (menu: string) => void}) => {
-  const [menu, setMenu] = useState(''); //사용자가 입력한 메뉴를 담는 상태변수
+//입력창 컴포넌트
+function MenuForm({onAddMenu}: {onAddMenu: (menu:string) => void}){
+  const [menu, setMenu] = useState(''); //메뉴 입력창
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // 입력했을때 실행되는 이벤트 함수
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); //페이지 새로고침 방지
-    if (menu.trim() === '') {  //사용자가 입력한 메뉴가 빈 문자열이면 알럿창으로 띄우고 다시 리턴
-        alert('텍스트를 입력해주세요.')
-        return
-    }; 
-    // 사용자가 입력한 메뉴가 있다면 onAddMenu함수를 호출해 입력한 메뉴 추가
+    e.preventDefault();
+    if(menu === ''){
+      alert('텍스트를 입력해주세요.');
+      return;
+    }
     onAddMenu(menu);
-    setMenu(''); // 입력후 menu상태 초기화하여 입력창을 비움
-    inputRef.current?.focus();
-  };
+    setMenu('');
+    inputRef.current?.focus(); //submit 동작 후 input에 자동 포커스
+  }
 
-  return (
-    // 메뉴를 입력하는 폼 생성
-    <form onSubmit={handleSubmit}>
-
-        {/* 사용자가 메뉴입력할수 있는 입력창 */}
-      <input
-        type="text"
-        value={menu}
-        onChange={(e) => setMenu(e.target.value)}
-        placeholder="메뉴를 입력하세요"
-        ref={inputRef}
-      />
-
-      <button type="submit">메뉴 추가</button>
-    </form>
-  );
-}
-
-// 입력된 메뉴 리스트 컴포넌트
-const MenuList = ({menus, onDeleteMenu}: {menus: string[], onDeleteMenu: (index: number) => void}) => {
   return(
-    <ul className='menu-list'>
-      {menus.map((menu: string, index: number) => (
-        <li key={index} className='menu-list-item'>
-          {menu}
-          <button onClick={() => onDeleteMenu(index)}>삭제</button>
-        </li>
-      ))}
-    </ul>
+    <>
+      <form onSubmit={handleSubmit}>
+        <input 
+          type="text" 
+          value={menu}
+          onChange={(e) => setMenu(e.target.value)}
+          ref = {inputRef}
+          placeholder='메뉴를 입력하세요.'
+        />
+        <button>입력</button>
+      </form>
+    </>
   )
 }
 
 function Home(){
-  const [menus, setMenus] = useState<string[]>([]); //입력된 메뉴 리스트 담는 배열
-  const [randomMenu, setRandomMenu] = useState<string | null>(null); //랜덤으로 선택된 메뉴 담는 배열
-  const [isRotating, setIsRotating] = useState(false); //메뉴리스트가 돌아가고있는지 체크하는 상태 변수
+  const [menuList, setMenuList] = useState<string[]>([]);
+  const [randomMenu, setRandomMenu] = useState<string | null>(null);
+  const [isRotating, setIsRotating] = useState(false);
 
-  //useEffect 훅을 사용 메뉴 리스트가 돌아가는 동작 구현
-  useEffect(() => {
-    if (isRotating) {
-      let index = 0;
-      const timer = setInterval(() => {
-        setRandomMenu(menus[index % menus.length]);
-        index++;
-      }, 150);
-
-      return () => clearInterval(timer);
-    }
-  }, [isRotating, menus]);
-
-  // 입력한 메뉴를 배열에 추가 
-  //handleAddMenu 함수는 매개변수 menu를 받아와서 menus 배열에 새로운 메뉴를 추가
-  const handleAddMenu = (menu: string) => {
-    setMenus([...menus, menu]); //...는 전개 연산자
-  };
-
-  // 입력한 메뉴를 배열에 삭제
-  const handleDeleteMenu = (index: number) => {
-    const updatedMenus = [...menus];
-    updatedMenus.splice(index, 1);
-    setMenus(updatedMenus);
-  };
-
-  //메뉴 돌리기 버튼 클릭시 메뉴 돌리기
+  //메뉴 추가
+  const handleAddMenu = (menu:string) => {
+    setMenuList([...menuList, menu]);
+  }
+  //메뉴 삭제
+  const handleDeleteMenu = (index:number) => {
+    setMenuList(menuList.filter((_, i) => i !== index));
+  }
+  //랜덤 버튼
   const handleRotate = () => {
-    if (menus.length > 0) {
+    if(menuList.length > 0){
       setIsRotating(true);
 
-      const duration = Math.max(1000, menus.length * 300);
       setTimeout(() => {
         setIsRotating(false);
-        const randomIndex = Math.floor(Math.random() * menus.length);
-        setRandomMenu(menus[randomIndex]);
-      }, duration);
+        const randomIndex = Math.floor(Math.random() * menuList.length);
+        setRandomMenu(menuList[randomIndex]);
+      }, 2000);
     }
-  };
-
-  //다시 돌리기 클릭시 랜덤으로 선택된 메뉴 다시 초기화
-  const handleRestart = () => {
-    setRandomMenu(null);
-  };
+  }
+  //랜덤 돌아가는 모션
+  useEffect(() => {
+    if(isRotating){
+      const timer = setInterval(() => {
+        const randomIndex = Math.floor(Math.random() * menuList.length);
+        setRandomMenu(menuList[randomIndex]);
+      }, 100);//랜덤 돌아가는 속도
+      return () => {
+        clearInterval(timer);
+      }
+    }
+  }, [isRotating, menuList, 500]);
 
   return(
-    <>
-    <Link to='/list'>리스트 보기</Link>
-    <div className='random-menu'>
-      <h3 className='title'>점심메뉴추천</h3>
+    <div className="home-container">
+      <h3>메뉴입력</h3>
       <MenuForm onAddMenu={handleAddMenu}/>
-      <MenuList menus={menus} onDeleteMenu={handleDeleteMenu} />
-      <div className="rotation-container">
-        <button onClick={handleRotate} disabled={isRotating || menus.length === 0}>
-          메뉴돌리기
-        </button>
-        {(isRotating || randomMenu) && (
-          <>
-            <div className="popup">
-              <p>{randomMenu ?? '...'}</p>
-            </div>
-            <button onClick={handleRestart}>다시돌리기</button>
-          </>
-        )}
-      </div>
-    </div>  
-    </>
-  );
+      <ul>
+        {menuList.map((menu, index) => {
+          return(
+            <li key={index}>
+              {menu}
+              <button onClick={() => handleDeleteMenu(index)}>삭제</button>
+            </li>
+          )
+        })}
+      </ul>
+      <button className="spin-button" onClick={handleRotate} disabled={isRotating || menuList.length === 0}>
+        메뉴 돌리기
+      </button>
+      {randomMenu && <div className="result-box">{randomMenu}</div>}
+    </div>
+  )
 }
-
 export default Home;
