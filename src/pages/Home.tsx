@@ -64,12 +64,12 @@ function Home(){
       const timer = setInterval(() => {
         const randomIndex = Math.floor(Math.random() * menuList.length);
         setRandomMenu(menuList[randomIndex]);
-      }, 200);//랜덤 돌아가는 속도
+      }, 100);//랜덤 돌아가는 속도
       return () => {
         clearInterval(timer);
       }
     }
-  }, [isRotating, menuList, 500]);
+  }, [isRotating, menuList, 100]);
 
   return(
     <div className="p-6 flex flex-col gap-6">
@@ -94,9 +94,7 @@ function Home(){
           메뉴 돌리기
         </button>
       </div>
-      {randomMenu && (
-        <p className="text-center text-2xl font-bold text-sky-700">{randomMenu}</p>
-      )}
+      <p className="text-center text-2xl font-bold text-sky-700">{randomMenu}</p>
     </div>
   )
 }
