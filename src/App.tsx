@@ -8,6 +8,7 @@ import Header from './components/Header.tsx'
 import List from './pages/lunch/List.tsx'
 import Detail from './pages/lunch/Detail.tsx'
 import Write from './pages/lunch/Write.tsx'
+import CategoryList from './pages/category/CategoryList.tsx'
 import Home from './pages/Home.tsx'
 
 import data from "./datas/mock-up.json"
@@ -88,6 +89,7 @@ function App() {
             <Route path="/lunch/list" element={<List/>} />
             <Route path="/lunch/detail/:id" element={<Detail/>} />
             <Route path="/lunch/write" element={<Write addLunch={addLunch} persons={persons} category={category}/>}/>
+            <Route path="/category/list" element={<CategoryList/>}/>
           </Routes>
         </div>
       </div>
