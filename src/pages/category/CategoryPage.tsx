@@ -1,7 +1,8 @@
-import {useState, useRef} from 'react';
+import {useState, useRef, useEffect} from 'react';
 
 function CategoryForm({onAddCategory}:{onAddCategory: (userInput:string) => void}){
   const [userInput, setUserInput] = useState(''); //입력창
+  const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   
   const handleSubmit = (e:React.FormEvent) => {
@@ -18,21 +19,38 @@ function CategoryForm({onAddCategory}:{onAddCategory: (userInput:string) => void
   return(
     <>
       <form onSubmit={handleSubmit}>
-        <input 
-          type="text"
-          ref={inputRef}
-          value={userInput}
-          onChange={(e) => setUserInput(e.target.value)}
-          placeholder='카테고리를 입력하세요'
-        /> 
-        <button>등록</button>
+        {isEditing ? 
+          <>
+          <input 
+            type="text"
+            ref={inputRef}
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            placeholder='카테고리를 입력하세요'
+          /> 
+          <button>수정</button>
+          <button>삭제</button>
+          </>
+          :
+          <>
+          <input 
+            type="text"
+            ref={inputRef}
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            placeholder='카테고리를 입력하세요'
+          /> 
+          <button>등록</button>
+          </>
+        }
       </form>
     </>
   )
 }
 
-function CategoryList(){
-  const [categories, setCategories] = useState<string[]>([]); //카테고리 목록
+function CategoryPage(){
+  // const [categories, setCategories] = useState<string[]>([]); //카테고리 목록
+  const [categories, setCategories] = useState(['양식', '중식', '일식']); //카테고리 목록
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [localContent, setLocalContent] = useState('');
 
@@ -61,33 +79,24 @@ function CategoryList(){
 
   return(
     <>
-      <h3>카테고리 등록</h3>
-      <CategoryForm onAddCategory={handleAddMenu}/>
-      <div>
-        {categories.map((cate, index) => {
-          return (
-            <div key={index} className='flex'>
-              {editingIndex === index ?   // 이 항목만 수정 모드인지 체크
-                <>
-                  <input
-                    value={localContent}
-                    onChange={(e) => setLocalContent(e.target.value)}
-                  />
-                  <button onClick={() => handleEditConfirm(index)}>확인</button>
-                  <button onClick={() => handleDeleteMenu(index)}>삭제</button>
-                </>
-                :
-                <>
-                  <p>{cate}</p>
-                  <button onClick={() => handleEditStart(index)}>수정</button>
-                  <button onClick={() => handleDeleteMenu(index)}>삭제</button>
-                </>
-                }
-            </div>
-          )
-        })}
+      <h3>카테고리 관리</h3>
+      <div className='flex h-full'>
+        {/* 카테고리 목록 */}
+        <div className='w-64 bg-gray-50 border-r border-gray-200 p-4'>
+          {categories.map((cate, index) => {
+            return (
+              <div key={index} className='px-3 py-2 rounded hover:bg-gray-100'>
+                <p>{cate}</p>
+              </div>
+            )
+          })}
+        </div>
+        {/* 카테고리 등록/수정 */}
+        <div className='flex-1 p-6'>
+          <CategoryForm onAddCategory={handleAddMenu}/>
+        </div>
       </div>
     </>
   )
 }
-export default CategoryList;
+export default CategoryPage;
