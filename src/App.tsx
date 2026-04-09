@@ -11,8 +11,10 @@ import Write from './pages/lunch/Write.tsx'
 import CategoryPage from './pages/category/CategoryPage.tsx'
 import Home from './pages/Home.tsx'
 
+import UserList from "./pages/user/UserList.tsx"
+import UserWrite from "./pages/user/UserWrite.tsx"
+
 import data from "./datas/mock-up.json"
-import personData from "./datas/person-data.json"
 import categoryData from "./datas/category.json"
 
 const BG_ICONS = [
@@ -58,11 +60,6 @@ function App() {
     localStorage.setItem('lunches', JSON.stringify(lunches))
   }, [lunches])
 
-  const [persons, setPersons] = useState(()=>{
-    const saved = localStorage.getItem('persons')
-    return saved? JSON.parse(saved) : personData
-  })
-
   const [category, setCategory] = useState(()=>{
     const saved = localStorage.getItem('category')
     return saved? JSON.parse(saved) : categoryData 
@@ -88,8 +85,11 @@ function App() {
             <Route path="/" element={<Home/>} />
             <Route path="/lunch/list" element={<List/>} />
             <Route path="/lunch/detail/:id" element={<Detail/>} />
-            <Route path="/lunch/write" element={<Write addLunch={addLunch} persons={persons} category={category}/>}/>
+            <Route path="/lunch/write" element={<Write addLunch={addLunch} category={category}/>}/>
             <Route path="/category/list" element={<CategoryPage/>}/>
+
+            <Route path="/user/list" element={<UserList/>}/>
+            <Route path="/user/write" element={<UserWrite/>}/>
           </Routes>
         </div>
       </div>
