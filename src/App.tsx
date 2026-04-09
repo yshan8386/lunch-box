@@ -17,6 +17,8 @@ import UserWrite from "./pages/user/UserWrite.tsx"
 import data from "./datas/mock-up.json"
 import categoryData from "./datas/category.json"
 
+import type { Lunch } from "./types/lunch.ts"
+
 const BG_ICONS = [
   { Icon: CakeIcon,        top: '3%',  left: '5%',  size: 40, rotate: -15 },
   { Icon: SparklesIcon,    top: '2%',  left: '28%', size: 28, rotate: 10  },
@@ -51,7 +53,7 @@ const BG_ICONS = [
 ]
 
 function App() {
-  const [lunches, setLunches] = useState(()=>{
+  const [lunches, setLunches] = useState<Lunch[]>(()=>{
     const saved = localStorage.getItem('lunches')
     return saved? JSON.parse(saved) : data
   })
@@ -65,7 +67,7 @@ function App() {
     return saved? JSON.parse(saved) : categoryData 
   })
 
-  const addLunch = (item)=> setLunches(prev=> [...prev, item])
+  const addLunch = (item : Lunch)=> setLunches(prev=> [...prev, item])
   const updateLunch = (id, updated)=> setLunches(prev=> prev.map(item=>item.id ===id? {...item, ...updated} : item))
   const deleteLunch = (id) => setLunches(prev=> prev.filter(item => item.id !== id))
 
@@ -83,7 +85,7 @@ function App() {
           <Header/>
           <Routes>
             <Route path="/" element={<Home/>} />
-            <Route path="/lunch/list" element={<List/>} />
+            <Route path="/lunch/list" element={<List lunches={lunches}/>} />
             <Route path="/lunch/detail/:id" element={<Detail/>} />
             <Route path="/lunch/write" element={<Write addLunch={addLunch} category={category}/>}/>
             <Route path="/category/list" element={<CategoryPage/>}/>

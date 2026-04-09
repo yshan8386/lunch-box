@@ -1,5 +1,5 @@
-export interface Person{
+export interface User{
     id : number
     name : string
-    favorite: string
+    category_id: number
 }

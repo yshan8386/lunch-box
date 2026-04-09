@@ -21,6 +21,8 @@ function Write({ addLunch, persons, category }: WriteProps) {
 
     const handleSave = () => {
         addLunch({ id: Date.now(), ...form, menus })
+        alert("저장되었습니다.")
+        navigate('/lunch/list')
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
