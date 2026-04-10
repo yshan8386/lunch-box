@@ -3,9 +3,11 @@ import {useState, useRef, useEffect} from 'react';
 function CategoryForm({
   onAdd,
   onEdit,
+  onEditStart,
 }:{
   onAdd: (userInput:string) => void,
   onEdit: (id:string, userInput:string) => void,
+  onEditStart: (id:string) => void,
 }){
   const [userInput, setUserInput] = useState(''); //입력창
   const [isEditing, setIsEditing] = useState<null | string>(null); //수정중인지 여부
@@ -53,7 +55,7 @@ function CategoryForm({
   )
 }
 
-function CategoryPage(){
+function CategoryPage(setIsEditing:any){
   const [categories, setCategories] = useState<{id: string; code_name: string}[]>([]); //카테고리 목록
   
   //데이터 불러오기
@@ -106,6 +108,10 @@ function CategoryPage(){
     .catch(err => console.log(err))
   }
 
+  const handleEditStart = (id:string) => {
+    setIsEditing(id);
+  }
+
   //리스트 삭제
   const handleDelete = (id:string) => {
     if(window.confirm('삭제하시겠습니까?')){
@@ -137,6 +143,7 @@ function CategoryPage(){
             return (
               <div key={index} className='px-3 py-2 rounded hover:bg-gray-100 flex'>
                 <p>{cate.code_name}</p>
+                <button onClick={() => handleEditStart(cate.id)}>수정</button>
                 <button onClick={() => handleDelete(cate.id)}>삭제</button>
               </div>
             )
